@@ -2,12 +2,11 @@ symbols = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '?', '_',
 
 
 def is_number(n):
-    is_num = True
     try:
         int(n)
+        return True
     except ValueError:
-        is_num = False
-    return is_num
+        return False
 
 
 def get_next_part(row):
@@ -20,7 +19,7 @@ def get_next_part(row):
     return ''
 
 
-def get_min_max(pos, engine):
+def get_adjacent_indices(pos, engine):
     x, y = pos
     x1 = max(0, x - 1)
     x2 = min(x + 2, len(engine[0]))
@@ -30,12 +29,8 @@ def get_min_max(pos, engine):
 
 
 def check_around(pos, engine):
-    x1, x2, y1, y2 = get_min_max(pos, engine)
-    for row in range(y1, y2):
-        for column in range(x1, x2):
-            if engine[row][column] in symbols:
-                return True
-    return False
+    x1, x2, y1, y2 = get_adjacent_indices(pos, engine)
+    return any(engine[row][column] in symbols for row in range(y1, y2) for column in range(x1, x2))
 
 
 def check_parts(row_num, engine):
